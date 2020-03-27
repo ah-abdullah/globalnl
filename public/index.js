@@ -378,7 +378,8 @@ function loadMembers(querySnapshot) {
         industry: data.industry,
         hometown: getLocationString(data.hometown_address),
         bio: data.bio || "",
-        linkedin_profile: data.linkedin_profile
+        linkedin_profile: data.linkedin_profile,
+        munAlumni: data.MUN
       };
 
       // Build element and inject
@@ -407,6 +408,9 @@ function loadMembers(querySnapshot) {
       headerSendAMessage.appendChild(spanSendAMessage);
       headerSendAMessage.appendChild(linkSendAMessage);
 
+      //Variable storing whether the memeber is a mun alumni or not 
+      var vis = memberFields.munAlumni === "Yes" ? "visible" : "hidden";
+      
       var memberDomString;
       if (
         data.linkedin_profile &&
@@ -414,30 +418,34 @@ function loadMembers(querySnapshot) {
         LinkedInEnable &&
         memberFields.bio
       ) {
+
         memberDomString = `<div class="col-auto p-1 card-col">
-<div id="${memberFields.public_uid}" class="card card-gnl">
-	<div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
-	<div class="card-body card-body-gnl">
-    <h5 class="card-title"><span class="fas fa-globalnl fa-map-marker-alt"></span>${
-      memberFields.currentAddress
-    }</h5>
-    <h5 class="card-title"><span class="fas fa-globalnl fa-briefcase"></span>${
-      memberFields.industry
-    }</h5>
-    <h5 class="card-title"><span class="fas fa-globalnl fa-anchor"></span>${
-      memberFields.hometown
-    }</h5>
-    <h5 class="card-title"><span class="fas fa-globalnl fa-info-circle"></span>${
-      memberFields.bio
-    }</h5>
-    <div class="linkedin_profile_card">
-      <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light"
-	  data-vanity="${memberFields.linkedin_profile.substring(memberFields.linkedin_profile.indexOf('/in/')+4).replace('/','')}">
-	  <a class="LI-simple-link" href='${memberFields.linkedin_profile}?trk=profile-badge'>View LinkedIn Profile</a></div>
+        <div id="${memberFields.public_uid}" class="card card-gnl">
+          <div>
+            <div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
+            <div class="munLogoAdder" style="position: absolute; right: 10px; top: 5px; visibility: ${vis};"><img src="assets/MUN-Logo-RGB-small.jpg" alt="MUN LOGO"></div>
+        </div>
+        <div class="card-body card-body-gnl">
+        <h5 class="card-title"><span class="fas fa-globalnl fa-map-marker-alt"></span>${
+          memberFields.currentAddress
+        }</h5>
+        <h5 class="card-title"><span class="fas fa-globalnl fa-briefcase"></span>${
+          memberFields.industry
+        }</h5>
+        <h5 class="card-title"><span class="fas fa-globalnl fa-anchor"></span>${
+          memberFields.hometown
+        }</h5>
+        <h5 class="card-title"><span class="fas fa-globalnl fa-info-circle"></span>${
+          memberFields.bio
+        }</h5>
+        <div class="linkedin_profile_card">
+          <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light"
+        data-vanity="${memberFields.linkedin_profile.substring(memberFields.linkedin_profile.indexOf('/in/')+4).replace('/','')}">
+        <a class="LI-simple-link" href='${memberFields.linkedin_profile}?trk=profile-badge'>View LinkedIn Profile</a></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</div>`;
+    </div>`;
         console.log(
           "Loaded profile: " +
             firstName +
@@ -453,8 +461,11 @@ function loadMembers(querySnapshot) {
       ) {
         memberDomString = `<div class="col-auto p-1 card-col">
 <div id="${memberFields.public_uid}" class="card card-gnl">
-	<div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
-	<div class="card-body card-body-gnl">
+<div>
+  <div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
+  <div class="munLogoAdder" style="position: absolute; right: 10px; top: 5px; visibility: ${vis};"><img src="assets/MUN-Logo-RGB-small.jpg" alt="MUN LOGO"></div>
+</div>
+<div class="card-body card-body-gnl">
     <h5 class="card-title"><span class="fas fa-globalnl fa-map-marker-alt"></span>${
       memberFields.currentAddress
     }</h5>
@@ -484,8 +495,11 @@ function loadMembers(querySnapshot) {
       } else if (memberFields.bio) {
         memberDomString = `<div class="col-auto p-1 card-col">
 <div id="{[0](public_uid)}" class="card card-gnl">
-	<div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
-	<div class="card-body card-body-gnl">
+<div>
+  <div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
+  <div class="munLogoAdder" style="position: absolute; right: 10px; top: 5px; visibility: ${vis};"><img src="assets/MUN-Logo-RGB-small.jpg" alt="MUN LOGO"></div>
+</div>
+<div class="card-body card-body-gnl">
     <h5 class="card-title"><span class="fas fa-globalnl fa-map-marker-alt"></span>${
       memberFields.currentAddress
     }</h5>
@@ -510,8 +524,11 @@ function loadMembers(querySnapshot) {
       } else {
         memberDomString = `<div class="col-auto p-1 card-col">
 <div id="{[0](public_uid)}" class="card card-gnl">
-	<div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
-	<div class="card-body card-body-gnl">
+<div>
+  <div class="card-header card-header-gnl"><span class="fas fa-gnl-head fa-portrait"></span>${firstName} ${lastName}</div>
+  <div class="munLogoAdder" style="position: absolute; right: 10px; top: 5px; visibility: ${vis};"><img src="assets/MUN-Logo-RGB-small.jpg" alt="MUN LOGO"></div>
+</div>
+<div class="card-body card-body-gnl">
     <h5 class="card-title"><span class="fas fa-globalnl fa-map-marker-alt"></span>${
       memberFields.currentAddress
     }</h5>

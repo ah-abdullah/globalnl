@@ -57,6 +57,14 @@ $("#MUN").on("change", function() {
     $("#grad_year").hide();
   }
 });
+// $("#MUN").on("change", function() {
+//   if ($(this).val() === "Yes") {
+//     $("#grad_year").show();
+//   } else {
+//     $("#grad_year").hide();
+//   }
+// });
+
 // Industry change event
 function changeMUN() {
   if ($("#MUN").val() == "Yes") {
@@ -104,11 +112,13 @@ $("#profile_form").submit(function(event) {
   var member = {};
   member.display_name = $("#display_name").val();
   member.MUN = $("#MUN").val();
+  member.MUN.logo = 
   member.privacy = $("input[name=privacy]:checked").val();
   member.date_updated = Date.now();
   // Conditional reads
   if (member.MUN == "Yes") {
     member["MUN_grad_year"] = parseInt($("#MUN_grad_year_box").val());
+
   }
 
   // checkif hometown address was given
@@ -131,6 +141,9 @@ $("#profile_form").submit(function(event) {
   //}
 
   member.bio = $("#bio").val();
+
+  //To store industry to database
+  member.industry = $("#industry").val();
   
   member.linkedin_profile = $("#linkedin").val();
 
@@ -221,6 +234,9 @@ function initApp() {
             );
           locationArray["hometown_address"] = userData["hometown_address"];
         }
+        //Case to deal with if any of the fields are empty
+      
+        if (userData["industry"] != null) $("#industry").val(userData["industry"]);
         if (userData["MUN"] != null) $("#MUN").val(userData["MUN"]);
         if (userData["MUN"] === "Yes") $("#grad_year").show();
         if (userData["MUN_grad_year"] != null)
