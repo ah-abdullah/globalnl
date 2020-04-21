@@ -129,11 +129,15 @@ function loadMembersOnMap(ne, sw) {
 
             //This is to correct the fact that some of the profiles are missing the http 
               var url = memberData.linkedin_profile;
-              var pattern = /^((http|https|ftp):\/\/)/;
+              var pattern = /^((http|https):\/\/)/;
+              var pattern2 = /^((linkedln.com):\/\/)/;
 
-              if(!pattern.test(url)) {
+              if(pattern2.test){
+                if(!pattern.test(url)) {
                   url = "http://" + url;
+                }
               }
+              
 
             //This to make the persons profile name clickabe, sending the user to the Linkedin profile
             var contentString = `<span class="fas fa-gnl-map fa-portrait"></span><b>${
