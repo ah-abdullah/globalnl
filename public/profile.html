@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Security-Policy" content="script-src * 'unsafe-inline'">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	
+	<style>
+
+#loginPage { background: url(assets/linkedin.svg) no-repeat -9999px -9999px; }
+
+	</style>
+
+  <title>Global NL - Member Profile</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <!-- <script src="https://use.fontawesome.com/b58b304000.js"></script> -->
+  
+		<!-- Font-Awesome: -->
+  		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+		
+  		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css">
+  
+  		<!-- Custom CSS -->
+		<link rel="stylesheet" href="globalnl.css">
+
+</head>
+
+<body>
+  
+<header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<!--
+		<a class="navbar-brand" href="http://www.globalnl.com/">
+		<img src="/assets/GlobalNL-Logo-Icon-White.png" width="30" height="30" class="d-inline-block align-top" alt="">
+		Global NL
+		</a>
+-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html"><span class="fas fa-globalnl fa-book"></span>Member Directory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="map.html"><span class="fas fa-globalnl fa-globe"></span>Member Map</a>
+            </li>
+          </ul>
+		  <ul id="userNavBar" class="nav navbar-nav navbar-right">
+			<li class="nav-item"><a class="nav-link" href="#" onClick="gnl.auth.loginLinkedIn();gnl.navBar.toggle();return false;"><span class="fas fa-globalnl fa-user"></span><span>Sign in</span></a></li>
+		</ul>
+	
+      </nav>
+    </header>
+	
+	<div id="loginPage" class="container">
+	<div class=""> <!-- Was row -->
+			<div class="Absolute-Center is-Responsive">
+			  <div class="text-center">
+			  <h1 class="w-100">
+				Sign in </h1>
+			   <p class="w-100">
+			   to continue to the Global NL Members Portal
+			  </p>  
+			  </div>
+			  <img class="mx-auto d-block" alt="Sign in with LinkedIn" id="sign-in-button" onClick="gnl.auth.loginLinkedIn();return false;" 
+			  src="assets/Sign-In-Small---Default.png" onmouseover="this.src='assets/Sign-In-Small---Hover.png'" onmouseout="this.src='assets/Sign-In-Small---Default.png'"/>
+        <div class="w-100 m-2"></div>
+      <div id="loginPage_text" class="text-center">
+			  <small class="font-italic text-muted">
+			  Global NL uses LinkedIn to provide a secure<br/>experience for our commmunity of members
+			  </small> 
+      </div>
+			</div>    
+		</div>
+	</div>	
+		
+	
+	<div id="mainPage" class="container">
+
+	<div class=""> <!-- Was row -->
+
+        <div class="col-xs-12 col-lg-10">
+	  <div id="alertbox" style="display:none;margin-top:10px;" class="alert alert-warning text-center" role="alert">
+  
+		</div>
+
+          <form id="profile_form" class="form-horizontal" role="form">
+		  
+		  <h4 style="margin-top: 10px;" class="text-center">My Member Profile Card</h4>
+		  
+		  <div class="card-deck">
+		  
+		  <div class="card-col w-100">
+<div class="card">
+	<div class="card-header card-header-bio">
+	
+				<div class="row" style="padding-top:10px;">
+				<div class="input-group col-xs-12 col-lg-10">
+				<label id="display_name_label" class="col-xs-4 col-lg-5 col-form-label">Name</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fas fa-portrait"></i>
+						</button>
+					  </span>
+					<input name="display_name" id="display_name" class="form-control py-2 border-left-0 border" style="color:black;" disabled>
+				</div>
+			</div>
+	
+	</div>
+	<div class="card-body card-body-bio">
+
+				<div class="row">
+				<div class="input-group col-xs-12 col-lg-10">
+					<label class="col-xs-4 col-lg-5 col-form-label">Current Location</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fas fa-map-marker-alt"></i>
+						</button>
+					  </span>
+					<input name="cl" id="autocomplete_current" class="form-control py-2 border-left-0 border" placeholder="Where are you at?" required>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="input-group col-xs-12 col-lg-10">
+					<label class="col-xs-4 col-lg-5 col-form-label">Hometown / NL Roots</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fas fa-anchor"></i>
+						</button>
+					  </span>
+					<input name="ht" id="autocomplete_hometown" class="form-control py-2 border-left-0 border" placeholder="Where are you connected to?" required>
+				</div>
+			</div>
+			
+			<!--Drop down for Industry choice-->
+			<div class="row">
+				<div class="input-group col-xs-12 col-lg-10">
+					<label class="col-xs-4 col-lg-5 col-form-label">Industry</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fa fa-industry"></i>
+						</button>
+					  </span>
+						<select id="industry" class="form-control">
+							<option></option>
+							<option>Accommodation and Food Services</option>
+							<option>Administrative and Support</option>
+							<option>Agriculture and Forestry</option></option>
+							<option>Arts, Entertainment and Recreation</option>
+							<option>Construction</option>
+							<option>Education</option>
+							<option>Finance and Insurance</option>
+							<option>Fisheries and Aquaculture</option>
+							<option>Health Care and Social Assistance</option>
+							<option>Manufacturing</option>
+							<option>Mining and Quarrying</option>
+							<option>Oil & Gas</option>
+							<option>Professional, Scientific and Technical Services</option>
+							<option>Public Administration</option>
+							<option>Real Estate and Rental and Leasing</option>
+							<option>Retail</option>
+							<option>Technology</option>
+							<option>Transportation and Warehousing</option>
+							<option>Utilities</option>
+							<option>Waste Management and Remediation Services</option>
+							<option>Wholesale Trade</option>
+							<option>Other</option>
+						</select>
+				</div>
+			</div>
+
+			<!--Drop down for MUN alumni-->
+			<div class="row">
+				<div class="input-group col-xs-12 col-lg-10">
+					<label class="col-xs-4 col-lg-5 col-form-label">Memorial University Alumni</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fas fa-university"></i>
+						</button>
+					  </span>
+					<select name="status" id="MUN" class="form-control py-2 border-left-0 border selectpicker" onclick="changeMUN();" required>
+						<option value="" selected disabled hidden>Are you a MUN student/graduate?</option>
+						<option value="Yes">Yes - MUN Student/Graduate</option>
+						<option>No</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="row" id="grad_year" style="display: none;">
+				<div class="input-group col-xs-12 col-lg-10">
+					<label class="col-xs-4 col-lg-5 col-form-label">MUN Graduation Year</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fa fa-graduation-cap"></i>
+						</button>
+					  </span>
+					<input name="grad_year" id="MUN_grad_year_box" placeholder="YYYY (Undergrad if multiple degrees)" class="form-control py-2 border-left-0 border"  type="text">
+				</div>
+			</div>
+			
+			<div class="row">
+            <div class="input-group col-xs-12 col-lg-10">
+              <label class="col-xs-4 col-lg-5 col-form-label" >About me</label>
+					  <span class="input-group-prepend">
+			  						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fa fa-info-circle"></i>
+						</button>
+					  </span>
+                  <textarea name="bio" id="bio" class="form-control py-2 border-left-0 border" placeholder="Tell us a little bit about yourself to share with other members. Professional background? Hobbies? Favourite thing about NL?" rows="4" cols="50"></textarea>
+            </div>
+			</div>
+
+				<div class="row">
+				<div class="input-group col-xs-12 col-lg-10">
+					<label class="col-xs-4 col-lg-5 col-form-label">LinkedIn Profile URL</label>
+						<span class="input-group-prepend">
+						<button class="btn btn-outline-secondary border-right-0 border btn-gnl" type="button">
+							<i class="fab fa-linkedin-in"></i>
+						</button>
+					  </span>
+					<input name="linkedin" id="linkedin" class="form-control py-2 border-left-0 border" placeholder="https://www.linkedin.com/in/YOUR-PROFILE-URL/" required>
+				</div>
+			</div>
+						
+	
+	
+  </div>
+</div>
+</div>
+</div>
+		  
+		  
+
+			<br/>
+		
+	<h4 style="margin-bottom: 14px;" class="text-center">My Membership Preferences</h4>
+            <div class="row">
+			
+			<div class="input-group col-xs-12 col-lg-10">
+              <label class="col-xs-4 col-lg-5 col-form-label" >Interests</label>
+                <div class="form-check col-xs-6 col-lg-7">
+                  <input class="form-check-input" type="checkbox" id="connect">
+				  <label class="form-check-label" for="connect">I want to <b>connect</b> with other Global NL members in my area</label>
+                 </div>
+				 <label class="col-xs-4 col-lg-5 col-form-label" ></label>
+				 <div class="form-check col-xs-6 col-lg-7">
+                  <input class="form-check-input" type="checkbox" id="learn">
+				  <label class="form-check-label" for="learn">I want to <b>learn</b> about what other Global NL members are doing all over the world</label>
+                 </div>
+				 <label class="col-xs-4 col-lg-5 col-form-label" ></label>
+				 <div class="form-check col-xs-6 col-lg-7">
+                  <input class="form-check-input" type="checkbox" id="mentor">
+				  <label class="form-check-label" for="mentor">I want to help <b>mentor</b> NL affiliated companies, organizations and individuals</label>
+                 </div>
+				 <label class="col-xs-4 col-lg-5 col-form-label" ></label>
+				 <div class="form-check col-xs-6 col-lg-7">
+				  <input class="form-check-input" type="checkbox" id="organize">
+				  <label class="form-check-label" for="organize">I want to help <b>organize</b> a Global NL event in my area</label>
+                 </div>
+				 <label class="col-xs-4 col-lg-5 col-form-label" ></label>
+				 <div class="form-check col-xs-6 col-lg-7">
+                  <input class="form-check-input" type="checkbox" id="support">
+				  <label class="form-check-label" for="support">I'm interested in joining the Global NL <b>leadership team</b> and helping behind the scenes</label>
+				</div>
+            </div>
+			</div>
+
+			<div class="row">
+            <div class="input-group col-xs-12 col-lg-10">
+              <label class="col-xs-4 col-lg-5 col-form-label" >Comments for Global NL</label>
+                  <textarea name="comments" id="comments" class="form-control py-2 border" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;" placeholder="Anything else on your mind?" rows="4" cols="50"></textarea>
+            </div>
+			</div>
+
+			<div class="row">
+            <div class="input-group col-xs-12 col-lg-10">
+              <label class="col-xs-4 col-lg-5 col-form-label" >Privacy</label>
+				 
+              <div class="form-check col-xs-6 col-lg-7">
+                  <input class="form-check-input" type="radio" name="privacy" value="public" id="public" required>
+				  <label class="form-check-label" for="public">I consent to my member profile card being shown publicly on the GlobalNL website</label>
+              </div>
+			  <label class="col-xs-4 col-lg-5 col-form-label" ></label>
+              <div class="form-check col-xs-6 col-lg-7">
+                  <input class="form-check-input" type="radio" name="privacy" value="members" id="members">
+				  <label class="form-check-label" for="members">I consent to my member profile card being shown to other GlobalNL members only</label>
+			  </div>
+			  </div>
+			  </div>
+
+				<!--MUN Privacy space-->
+				<div class="row" id="MUN_Privacy" style="padding-top:30px; padding-bottom: 30px;">
+					<div class="input-group col-xs-12 col-lg-12" style="text-align: center;">
+						<i style="font-size: x-small;">Memorial University and the Offices of Alumni Engagement and Development occasionally contact alumni by mail, e-mail and phone with information regarding alumni events, benefits and services.GlobalNL members who indicate they are alumni of Memorial University consent to their profile card being shared with Memorial University Alumni Engagement.</i>
+						<a cLass="munAlumniLink"style="font-size: x-small; margin-left: auto; margin-right: auto;" href="https://www.mun.ca/alumni/globalnl.php" target="___blank">View more information about the GlobalNL and Memorial partnership</a>
+					</div>
+				</div>
+
+				<!-- Button -->
+				<div class="text-center" style="margin-left: auto; margin-right: auto;">
+				<input type="submit" class="btn btn-primary" value="Save">
+				<input id="cancelButton" type="button" class="btn btn-secondary" value="Cancel Changes">
+				</div>
+          </form>
+        </div>
+    </div>
+  </div>
+  
+  	<footer class="footer">
+      <div class="container">
+        <span class="text-muted">Global NL — <i>A Global Community</i></span>
+      </div>
+    </footer>
+  
+  
+  	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+	<!-- Bootstrap -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+
+	<!-- include firestore now -->
+
+	<script src="/__/firebase/5.3.0/firebase-app.js"></script>
+	<script src="/__/firebase/5.3.0/firebase-auth.js"></script>
+	<script src="/__/firebase/5.3.0/firebase-firestore.js"></script>
+	<script src="/__/firebase/init.js"></script>
+
+	<script type="text/javascript" src="gnl.js"></script>
+	<script src="profile.js"></script>
+
+
+	<!-- auto complete from google maps must be called after registration.js -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMkgmsa9F7zBtPw93YhaEzXrsbQkCT9T8&libraries=places&callback=initAutocomplete" async defer></script>
+
+</body>
+</html>

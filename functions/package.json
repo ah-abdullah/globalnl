@@ -1,0 +1,31 @@
+{
+  "name": "linkedin-auth-functions",
+  "description": "Authenticate with LinkedIn Firebase Functions sample",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "firebase": "^5.3.1",
+    "firebase-admin": "^5.13.1",
+    "firebase-functions": "^2.2.0",
+    "geofire": "^4.1.2",
+    "mailgun-js": "^0.22.0",
+    "node-linkedin": "github:captainjackrana/node-linkedin",
+    "nodemailer": "^4.6.8",
+    "nodemailer-postmark-transport": "^1.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.13.1",
+    "eslint-plugin-promise": "^3.6.0"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint --max-warnings=0 .",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase experimental:functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "private": true,
+  "engines": {
+    "node": "8"
+  }
+}
