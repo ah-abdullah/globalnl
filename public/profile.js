@@ -57,6 +57,15 @@ $("#MUN").on("change", function() {
     $("#grad_year").hide();
   }
 });
+
+$('input[type="radio"]').click(function() {
+  if($(this).attr('id') == 'public') {
+       $('#MUN_Privacy').show();           
+  }
+  else {
+       $('#MUN_Privacy').hide();   
+  }
+});
 // $("#MUN").on("change", function() {
 //   if ($(this).val() === "Yes") {
 //     $("#grad_year").show();
@@ -112,7 +121,7 @@ $("#profile_form").submit(function(event) {
   var member = {};
   member.display_name = $("#display_name").val();
   member.MUN = $("#MUN").val();
-  member.MUN.logo = 
+  member.MUN.logo = "";
   member.privacy = $("input[name=privacy]:checked").val();
   member.date_updated = Date.now();
   // Conditional reads
@@ -249,8 +258,10 @@ function initApp() {
         // Privacy
         if (userData["privacy"] === "public") {
           $(':input[value="public"]').prop("checked", true);
+          $('#MUN_Privacy').show();     
         } else {
           $(':input[value="members"]').prop("checked", true);
+          $('#MUN_Privacy').hide();     
         }
 
         //Use LinkedIn location if current location not set
