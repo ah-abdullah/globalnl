@@ -151,7 +151,7 @@ img{
     // This is the URL to the HTTP triggered 'token' Firebase Function.
     // See https://firebase.google.com/docs/functions.
 	//var tokenFunctionURL = 'https://us-central1-' + getFirebaseProjectId() + '.cloudfunctions.net/token';
-	var tokenFunctionURL = 'https://us-central1-globalnl-members.cloudfunctions.net/redirect';
+	var tokenFunctionURL = 'https://us-central1-globalnl-members.cloudfunctions.net/token';
     //var tokenFunctionURL = 'https://members.globalnl.com/token';
 	script.src = tokenFunctionURL +
         '?code=' + encodeURIComponent(code) +
