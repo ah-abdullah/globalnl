@@ -218,7 +218,6 @@ exports.token = functions.https.onRequest((req, res) => {
   //res.setHeader('Cache-Control', 'private');
 
   try {
-    return cookieParser()(req, res, () => {
       console.log('Received state via query: ', req.query.state);
       Linkedin.auth.authorize(OAUTH_SCOPES, req.query.state); // Makes sure the state parameter is set
       console.log('Received auth code:', req.query.code);
@@ -232,6 +231,9 @@ exports.token = functions.https.onRequest((req, res) => {
           }
           const linkedin = Linkedin.init(results.access_token);
 		  linkedin.people.email((error,userEmail) => {
+        if (error) {
+          throw error;
+        }
           linkedin.people.me((error, userResults) => {
             if (error) {
               throw error;
@@ -261,9 +263,8 @@ exports.token = functions.https.onRequest((req, res) => {
         }
       );
 //    }
-  });
   } catch (error) {
-    console.log("Error in cookie loading etc", error.toString());
+    console.log("Error in token function, LinkedIn requests, Firebase Account update/creation", error.toString());
     return res.jsonp({
       error: error.toString
     });

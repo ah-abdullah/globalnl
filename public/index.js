@@ -1,10 +1,10 @@
 /******************************************************
  * Global variables
  ******************************************************/
- 
+
 window.LIBadgeCallback = (function() {
     var cached_function = window.LIBadgeCallback;
-    return function() {      
+    return function() {
         var result = cached_function.apply(this, arguments);
         $('.LI-view-profile').html('View LinkedIn Profile');
         return result;
@@ -408,7 +408,7 @@ function loadMembers(querySnapshot) {
       headerSendAMessage.appendChild(spanSendAMessage);
       headerSendAMessage.appendChild(linkSendAMessage);
 
-      //Variable storing whether the memeber is a mun alumni or not 
+      //Variable storing whether the memeber is a mun alumni or not
       var vis = memberFields.munAlumni === "Yes" ? "visible" : "hidden";
       var memberDomString;
 
@@ -1084,9 +1084,11 @@ function dbMigration() {
     querySnapshot.forEach(function(doc) {
       let industry = doc.data().industry;
       if (industry) {
-        firebase.firestore().collection("members").doc(doc.id).update({
-          industry: [industry]
-        });
+        if (typeof industry == "string") {
+          firebase.firestore().collection("members").doc(doc.id).update({
+            industry: [industry]
+          });
+        }
       }
       else {
         firebase.firestore().collection("members").doc(doc.id).update({
