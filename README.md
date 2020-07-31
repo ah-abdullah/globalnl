@@ -36,7 +36,7 @@ List of current development required, order is not significant.
    - Show recently updated members
    - Search by company (completed)
 
-- [] **Move Navbar to standalone file**
+- [ ] **Move Navbar to standalone file**
 
-- [] **Clean database**
+- [ ] **Clean database**
    - Things like incorrect LinkedIn profile links, capitalization, etc.
