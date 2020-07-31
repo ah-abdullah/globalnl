@@ -29,6 +29,7 @@ function fillTable() {
         memberdata[member].dbUid + "</td><td><button id='"+ memberdata[member].dbUid +
         "'class='btn btn-primary' onclick='adminRedirect();'>Edit Profile</button></td><td><button onclick='databaseRedirect(&quot;" +
         memberdata[member].dbUid + "&quot;);' class='btn btn-secondary'>Go to Database</button></td></tr>");
+
     }
     $("#fillTable").hide();
     $("#DBTitles").show();
@@ -48,6 +49,7 @@ function fillTable() {
                 }
             }
         ],
+
       paging: false,
       language: {
         info: "_TOTAL_ members",
@@ -95,3 +97,4 @@ function databaseRedirect(uid) {
       window.open("https://console.firebase.google.com/u/0/project/globalnl-database-test/database/firestore/data~2Fmembers~2F" + uid, "_blank");
   }
 }
+

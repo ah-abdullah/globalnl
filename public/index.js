@@ -2,6 +2,7 @@
  * Global variables
  ******************************************************/
 
+
 // Object with last returned database query to use for pagination
 var last_read_doc = 0;
 
@@ -373,6 +374,7 @@ function loadMembers(querySnapshot) {
         firstName = data.first_name,
         lastName = data.last_name;
         photoURL = data.photoURL || "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
+
 
       var memberFields = {
         public_uid: doc.id,
@@ -1096,7 +1098,7 @@ function memberSearch() {
   } else {
     fbi
       .orderBy("random")
-      .startAfter(last_read_doc)
+      .startAt(last_read_doc)
       .limit(members_per_page)
       .get()
       .then(function(querySnapshot) {
@@ -1268,3 +1270,4 @@ function profileLinkFix() {
     });
   });
 }
+
