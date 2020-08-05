@@ -373,7 +373,7 @@ function loadMembers(querySnapshot) {
       var data = doc.data(),
         firstName = data.first_name,
         lastName = data.last_name;
-        photoURL = data.photoURL || "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
+        photoURL = "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 
 
       var memberFields = {
@@ -386,7 +386,7 @@ function loadMembers(querySnapshot) {
         bio: data.bio || "",
         linkedin_profile: data.linkedin_profile,
         munAlumni: data.MUN,
-        photoURL: photoURL,
+        photoURL: data.photoURL,
         headline: data.headline || "",
         company: data.company,
         companyLogo: data.company_logo
@@ -427,6 +427,21 @@ function loadMembers(querySnapshot) {
         var cardIndustry = memberFields.industry.toString().replace(",", ", ");
       }
 
+      // checking if users photoURL in the database is valid and then adding it to the card
+      if (memberFields.photoURL && memberFields.photoURL !== "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png") {
+        $.ajax({
+          type: 'GET',
+          url: memberFields.photoURL,
+          async: true,
+          success: function (data) {
+            $(`#${memberFields.public_uid}_photoURL`).attr('src', memberFields.photoURL);
+          },
+          error: function(jqXHR, textStatus, ex) {
+            console.log(textStatus + "," + ex + "," + jqXHR.responseText);
+          }
+        });
+      }
+
       if (
         memberFields.company &&
         memberFields.companyLogo &&
@@ -439,7 +454,7 @@ function loadMembers(querySnapshot) {
 	<div>
 	<div class="card-header card-header-gnl">
   <span class="fas fa-gnl-head">
-  <img src="${photoURL}" class="gnl-user-photo"></span>
+  <img id="${memberFields.public_uid}_photoURL" src="${photoURL}" class="gnl-user-photo"></span>
   <div style="width: 195px">
   ${firstName} ${lastName}
   <div class="card-header-headline">
@@ -492,7 +507,7 @@ function loadMembers(querySnapshot) {
 	<div>
 	<div class="card-header card-header-gnl">
   <span class="fas fa-gnl-head">
-  <img src="${photoURL}" class="gnl-user-photo"></span>
+  <img id="${memberFields.public_uid}_photoURL" src="${photoURL}" class="gnl-user-photo"></span>
   <div style="width: 195px">
   ${firstName} ${lastName}
   <div class="card-header-headline">
@@ -540,7 +555,7 @@ function loadMembers(querySnapshot) {
       <div>
       <div class="card-header card-header-gnl">
       <span class="fas fa-gnl-head">
-      <img src="${photoURL}" class="gnl-user-photo"></span>
+      <img id="${memberFields.public_uid}_photoURL" src="${photoURL}" class="gnl-user-photo"></span>
       <div style="width: 195px">
       ${firstName} ${lastName}
       <div class="card-header-headline">
@@ -588,7 +603,7 @@ function loadMembers(querySnapshot) {
       <div>
       <div class="card-header card-header-gnl">
       <span class="fas fa-gnl-head">
-      <img src="${photoURL}" class="gnl-user-photo"></span>
+      <img id="${memberFields.public_uid}_photoURL" src="${photoURL}" class="gnl-user-photo"></span>
       <div style="width: 195px">
       ${firstName} ${lastName}
       <div class="card-header-headline">
@@ -632,7 +647,7 @@ function loadMembers(querySnapshot) {
       <div>
       <div class="card-header card-header-gnl">
       <span class="fas fa-gnl-head">
-      <img src="${photoURL}" class="gnl-user-photo"></span>
+      <img id="${memberFields.public_uid}_photoURL" src="${photoURL}" class="gnl-user-photo"></span>
       <div style="width: 195px">
       ${firstName} ${lastName}
       <div class="card-header-headline">
@@ -673,7 +688,7 @@ function loadMembers(querySnapshot) {
 	<div>
 	<div class="card-header card-header-gnl">
   <span class="fas fa-gnl-head">
-  <img src="${photoURL}" class="gnl-user-photo"></span>
+  <img id="${memberFields.public_uid}_photoURL" src="${photoURL}" class="gnl-user-photo"></span>
   <div style="width: 195px">
   ${firstName} ${lastName}
   <div class="card-header-headline">
@@ -794,7 +809,7 @@ function memberSearch() {
     } else {
       console.log("Error");
     }
-  } else if (searchButtonStates["company"]) {
+  } else if (searchButtonStates["company"] && last_read_doc) {
     if (formStatic["company"] == null) {
       alert("Please enter a company");
     }
@@ -810,7 +825,23 @@ function memberSearch() {
           loadMembers(querySnapshot);
         });
     }
-    }  else if (searchButtonStates["location"] && last_read_doc) {
+    }
+    else if (searchButtonStates["company"]) {
+      if (formStatic["company"] == null) {
+        alert("Please enter a company");
+      }
+      else if (formStatic["company"]) {
+        console.log("Company entered");
+        fbi
+          .orderBy("random")
+          .where("company", "==", formStatic["company"])
+          .limit(members_per_page)
+          .get()
+          .then(function(querySnapshot) {
+            loadMembers(querySnapshot);
+          });
+      }
+      } else if (searchButtonStates["location"] && last_read_doc) {
     if (formStatic["location"] == null) {
       alert("Please enter a Current Location");
     } else if (formStatic["location"]["city"]) {
@@ -890,7 +921,6 @@ function memberSearch() {
           "==",
           formStatic["location"]["country"]
         )
-        .startAfter(last_read_doc)
         .limit(members_per_page)
         .get()
         .then(function(querySnapshot) {
@@ -910,7 +940,6 @@ function memberSearch() {
           "==",
           formStatic["location"]["country"]
         )
-        .startAfter(last_read_doc)
         .limit(members_per_page)
         .get()
         .then(function(querySnapshot) {
@@ -925,7 +954,6 @@ function memberSearch() {
           "==",
           formStatic["location"]["country"]
         )
-        .startAfter(last_read_doc)
         .limit(members_per_page)
         .get()
         .then(function(querySnapshot) {
@@ -1095,10 +1123,18 @@ function memberSearch() {
     } else {
       console.log("Error");
     }
+  } else if (last_read_doc){
+    fbi
+      .orderBy("random")
+      .startAfter(last_read_doc)
+      .limit(members_per_page)
+      .get()
+      .then(function(querySnapshot) {
+        loadMembers(querySnapshot);
+      });
   } else {
     fbi
       .orderBy("random")
-      .startAt(last_read_doc)
       .limit(members_per_page)
       .get()
       .then(function(querySnapshot) {
@@ -1270,4 +1306,3 @@ function profileLinkFix() {
     });
   });
 }
-
