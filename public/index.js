@@ -23,6 +23,7 @@ searchButtonStates["location"] = false;
 searchButtonStates["industry"] = false;
 searchButtonStates["hometown"] = false;
 searchButtonStates["company"] = false;
+searchButtonStates["signin"] = false;
 
 // Firebase
 const settings = { timestampsInSnapshots: true };
@@ -201,6 +202,21 @@ function initApp() {
       searchButtonStates["hometown"] = false;
       memberSearch();
     }
+  });
+
+  $("#form_signin").submit(function(event) {
+    event.preventDefault();
+    console.log("Searching by most recently active...");
+    $("#members-list").empty();
+    $("#preloader").show();
+    last_read_doc = 0;
+    searchButtonStates["industry"] = false;
+    searchButtonStates["name"] = false;
+    searchButtonStates["location"] = false;
+    searchButtonStates["hometown"] = false;
+    searchButtonStates["company"] = false;
+    searchButtonStates["signin"] = true;
+    memberSearch();
   });
 
   $("#form_industry").submit(function(event) {
@@ -852,7 +868,24 @@ function memberSearch() {
             loadMembers(querySnapshot);
           });
       }
-      } else if (searchButtonStates["location"] && last_read_doc) {
+    } else if (searchButtonStates["signin"] && last_read_doc) {
+          fbi
+            .orderBy("date_signedin", "desc")
+            .startAfter(last_read_doc)
+            .limit(members_per_page)
+            .get()
+            .then(function(querySnapshot) {
+              loadMembers(querySnapshot);
+            });
+    } else if (searchButtonStates["signin"]) {
+            fbi
+              .orderBy("date_signedin", "desc")
+              .limit(members_per_page)
+              .get()
+              .then(function(querySnapshot) {
+                loadMembers(querySnapshot);
+              });
+    } else if (searchButtonStates["location"] && last_read_doc) {
     if (formStatic["location"] == null) {
       alert("Please enter a Current Location");
     } else if (formStatic["location"]["city"]) {
