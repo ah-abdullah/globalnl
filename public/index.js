@@ -182,7 +182,17 @@ function initApp() {
       console.log("Searching by company...");
       $("#members-list").empty();
       $("#preloader").show();
-      formStatic["company"] = $("#inputcompany").val();
+      // NOTE: This correction misses companies with more than one capital in the first word if they aren't entered correctly
+      // ex: "globalnl" will correct to "Globalnl", but the database entry is "GlobalNL". or "colab" to "Colab", database is "CoLab"
+      // too many of these variations to account for with corrections, so capitalization is left up to the user in these cases
+      formStatic["company"] =
+      $("#inputcompany")
+        .val()
+        .charAt(0)
+        .toUpperCase() +
+      $("#inputcompany")
+        .val()
+        .slice(1);
       last_read_doc = 0;
       searchButtonStates["name"] = false;
       searchButtonStates["company"] = true;
@@ -816,9 +826,9 @@ function memberSearch() {
     else if (formStatic["company"]) {
       console.log("Company entered");
       fbi
-        .orderBy("random")
+        .orderBy("company")
         .startAfter(last_read_doc)
-        .where("company", "==", formStatic["company"])
+        .endAt(formStatic["company"] + "z")
         .limit(members_per_page)
         .get()
         .then(function(querySnapshot) {
@@ -833,8 +843,9 @@ function memberSearch() {
       else if (formStatic["company"]) {
         console.log("Company entered");
         fbi
-          .orderBy("random")
-          .where("company", "==", formStatic["company"])
+          .orderBy("company")
+          .startAt(formStatic["company"])
+          .endAt(formStatic["company"] + "z")
           .limit(members_per_page)
           .get()
           .then(function(querySnapshot) {
