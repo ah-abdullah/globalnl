@@ -173,6 +173,7 @@ function initApp() {
       searchButtonStates["industry"] = false;
       searchButtonStates["location"] = false;
       searchButtonStates["hometown"] = false;
+      searchButtonStates["signin"] = false;
       memberSearch();
     }
   });
@@ -183,23 +184,14 @@ function initApp() {
       console.log("Searching by company...");
       $("#members-list").empty();
       $("#preloader").show();
-      // NOTE: This correction misses companies with more than one capital in the first word if they aren't entered correctly
-      // ex: "globalnl" will correct to "Globalnl", but the database entry is "GlobalNL". or "colab" to "Colab", database is "CoLab"
-      // too many of these variations to account for with corrections, so capitalization is left up to the user in these cases
-      formStatic["company"] =
-      $("#inputcompany")
-        .val()
-        .charAt(0)
-        .toUpperCase() +
-      $("#inputcompany")
-        .val()
-        .slice(1);
+      formStatic["company"] = $("#inputcompany").val().toLowerCase();
       last_read_doc = 0;
       searchButtonStates["name"] = false;
       searchButtonStates["company"] = true;
       searchButtonStates["industry"] = false;
       searchButtonStates["location"] = false;
       searchButtonStates["hometown"] = false;
+      searchButtonStates["signin"] = false;
       memberSearch();
     }
   });
@@ -232,6 +224,7 @@ function initApp() {
       searchButtonStates["location"] = false;
       searchButtonStates["hometown"] = false;
       searchButtonStates["company"] = false;
+      searchButtonStates["signin"] = false;
       memberSearch();
     }
   });
@@ -255,6 +248,7 @@ function initApp() {
       searchButtonStates["industry"] = false;
       searchButtonStates["hometown"] = false;
       searchButtonStates["company"] = false;
+      searchButtonStates["signin"] = false;
       memberSearch();
     }
   });
@@ -278,6 +272,7 @@ function initApp() {
       searchButtonStates["location"] = false;
       searchButtonStates["industry"] = false;
       searchButtonStates["company"] = false;
+      searchButtonStates["signin"] = false;
       memberSearch();
     }
   });
@@ -302,6 +297,7 @@ function initApp() {
     searchButtonStates["industry"] = false;
     searchButtonStates["hometown"] = false;
     searchButtonStates["company"] = false;
+    searchButtonStates["signin"] = false;
     last_read_doc = 0;
     $("#members-list").empty();
     memberSearch();
@@ -842,7 +838,7 @@ function memberSearch() {
     else if (formStatic["company"]) {
       console.log("Company entered");
       fbi
-        .orderBy("company")
+        .orderBy("company_lower")
         .startAfter(last_read_doc)
         .endAt(formStatic["company"] + "z")
         .limit(members_per_page)
@@ -859,7 +855,7 @@ function memberSearch() {
       else if (formStatic["company"]) {
         console.log("Company entered");
         fbi
-          .orderBy("company")
+          .orderBy("company_lower")
           .startAt(formStatic["company"])
           .endAt(formStatic["company"] + "z")
           .limit(members_per_page)
