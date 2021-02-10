@@ -317,7 +317,7 @@ function initLoad() {
                   if ($(".LI-field-icon").length>0) companyLogo = $(".LI-field-icon").attr("src");
 
                   // checking if users photoURL in the database is valid
-                  if (photoURL && doc.data().photoURL !== photoURL && photoURL !== "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png") {
+                  if (photoURL && doc.data().photoURL !== photoURL && !/ghost/gi.test(photoURL)) { // global, case-insensitive regex test
                     firebase.firestore().collection("members").doc(doc.id).update({
                       photoURL: photoURL
                     });
@@ -325,8 +325,8 @@ function initLoad() {
                   } else {
                     console.log("No need to update photo");
                   }
-                  // checking if users photoURL in the database is valid
-                  if (companyLogo && doc.data().company_logo !== companyLogo && companyLogo !== "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png") {
+                  // checking if users company_logo in the database is valid
+                  if (companyLogo && doc.data().company_logo !== companyLogo && !/ghost/gi.test(companyLogo)) { // global, case-insensitive regex test
                     firebase.firestore().collection("members").doc(doc.id).update({
                       company_logo: companyLogo
                     });
@@ -355,7 +355,7 @@ function initLoad() {
                   })
                   .catch(function(error) {
                     console.log(error);
-                    console.log("Error updating user account photoURL for", uid);
+                    console.log("Error updating user account photoURL for ", uid);
                   });
                 })
                 .catch((error) => {
@@ -499,8 +499,8 @@ function loadMembers(querySnapshot) {
       var data = doc.data(),
         firstName = data.first_name,
         lastName = data.last_name,
-        photoURL = "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png",
-        companyLogo = "https://static-exp1.licdn.com/scds/common/u/images/themes/katy/ghosts/company/ghost_company_80x80_v1.png";
+        photoURL = "assets/ghost_person_200x200_v1.png",
+        companyLogo = "assets/ghost_company_80x80_v1.png";
 
       var memberFields = {
         public_uid: doc.id,
