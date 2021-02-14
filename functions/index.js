@@ -39,7 +39,8 @@ var serviceAccount = require(`./${functions.config().project.name}-service-accou
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: `https://${functions.config().project.name}.firebaseio.com`
+  databaseURL: `https://${functions.config().project.name}.firebaseio.com`,
+  storageBucket: `https://${functions.config().project.name}.appspot.com`
 });
 var db = admin.firestore();
 const settings = { timestampsInSnapshots: true };
@@ -243,7 +244,7 @@ exports.token = functions.https.onRequest((req, res) => {
             member = {
               first_name: userResults.firstName.localized[Object.keys(userResults.firstName.localized)[0]] || "",
               last_name: userResults.lastName.localized[Object.keys(userResults.lastName.localized)[0]] || "",
-              photoURL: userResults.profilePicture['displayImage~'].elements[0].identifiers[0].identifier || "",
+              photoURL: "",
               date_signedin: Date.now()
             };
 
@@ -251,7 +252,7 @@ exports.token = functions.https.onRequest((req, res) => {
             return createFirebaseAccount(
               "00LI_" + userResults.id,
               member.first_name + ' ' + member.last_name,
-              member.photoURL,//userResults.pictureUrl,
+              userResults.profilePicture['displayImage~'].elements[0].identifiers[0].identifier,//userResults.pictureUrl,
               userEmail.elements[0]['handle~']['emailAddress']
             ).then(firebaseToken => {
               // Serve an HTML page that signs the user in and updates the user profile.
@@ -260,10 +261,9 @@ exports.token = functions.https.onRequest((req, res) => {
               });
             });
           });
-		});
+		  });
         }
       );
-//    }
   } catch (error) {
     console.log("Error in token function, LinkedIn requests, Firebase Account update/creation", error.toString());
     return res.jsonp({
@@ -289,7 +289,6 @@ function createFirebaseAccount(uid, displayName, photoURL, email) {
     .auth()
     .updateUser(uid, {
       displayName: displayName,
-      photoURL: photoURL,
       email: email,
       emailVerified: true
     })
